@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VinUni Lab #3 — Chatbot Baseline vs ReAct Agent Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-group">
+                <div class="logo-icon">🤖</div>
+                <div>
+                    <h1>VinUni AI Lab #3 Explorer</h1>
+                    <p class="subtitle">So sánh Chatbot Baseline vs ReAct Agent Loop (Thought-Action-Observation)</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-glow"><span class="pulse-dot"></span> ReAct Engine Active</span>
+                <span class="badge badge-outline">Gemini / Tool Registry</span>
+            </div>
+        </header>
+
+        <!-- Main Query Section -->
+        <section class="query-card glass-panel">
+            <div class="card-header">
+                <h2>💬 Nhập Câu Hỏi Tra Cứu Khách Hàng</h2>
+                <div class="mode-selector">
+                    <button type="button" class="mode-btn active" data-mode="both">⚡ Side-by-Side</button>
+                    <button type="button" class="mode-btn" data-mode="react">🧠 ReAct Agent Only</button>
+                    <button type="button" class="mode-btn" data-mode="baseline">💬 Baseline Only</button>
+                </div>
+            </div>
+
+            <!-- Sample Query Pills -->
+            <div class="sample-queries-wrapper">
+                <span class="sample-label">Gợi ý câu hỏi mẫu:</span>
+                <div id="sample-queries-list" class="sample-queries">
+                    <!-- Populated dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Search Form -->
+            <form id="query-form" class="query-form">
+                <div class="input-wrapper">
+                    <input type="text" id="query-input" placeholder="Ví dụ: Tìm cho tôi chuyến bay từ HAN đi SGN dưới 2 triệu, rồi cho biết thời tiết SGN nên mặc gì?" required>
+                    <button type="submit" id="submit-btn" class="btn-primary">
+                        <span class="btn-text">Gửi Câu Hỏi</span>
+                        <span class="btn-spinner hidden"></span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Loading Skeleton / Overlay -->
+        <div id="loading-state" class="loading-state hidden">
+            <div class="spinner"></div>
+            <p id="loading-text">Agent đang phân tích quy trình Thought-Action-Observation...</p>
+        </div>
+
+        <!-- Output Grid -->
+        <div id="results-container" class="results-container hidden">
+            <div class="comparison-grid" id="comparison-grid">
+                
+                <!-- Baseline Output Panel -->
+                <div id="baseline-panel" class="result-card glass-panel">
+                    <div class="card-header border-baseline">
+                        <div class="title-with-badge">
+                            <span class="card-icon">🤖</span>
+                            <h3>Chatbot Baseline</h3>
+                        </div>
+                        <span id="baseline-meta" class="meta-tag">No Tools</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="mode-indicator">
+                            <span class="indicator-dot"></span>
+                            <span id="baseline-mode-label">Mode: mock_baseline</span>
+                        </div>
+                        <div class="answer-box" id="baseline-answer">
+                            <!-- Answer text inserted here -->
+                        </div>
+                        <div class="metrics-footer">
+                            <span id="baseline-time" class="metric-item">⏱️ 0 ms</span>
+                            <span class="metric-item">🛠️ 0 Tool Calls</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ReAct Agent Output Panel -->
+                <div id="react-panel" class="result-card glass-panel highlight-border">
+                    <div class="card-header border-react">
+                        <div class="title-with-badge">
+                            <span class="card-icon">🧠</span>
+                            <h3>ReAct Agent (Production)</h3>
+                        </div>
+                        <span id="react-status-badge" class="badge badge-success">Completed</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="answer-box final-answer-style" id="react-answer">
+                            <!-- Final Answer inserted here -->
+                        </div>
+                        <div class="metrics-footer">
+                            <span id="react-time" class="metric-item">⏱️ 0 ms</span>
+                            <span id="react-iterations-count" class="metric-item">🔄 0 Iterations</span>
+                            <span id="react-tools-count" class="metric-item">🛠️ 0 Tool Calls</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Detailed ReAct Trace Accordion/Timeline -->
+            <div id="trace-section" class="trace-section glass-panel">
+                <div class="trace-header">
+                    <div>
+                        <h3>🔍 Lịch Sử Suy Luận Chi Tiết (ReAct Trace Log)</h3>
+                        <p class="subtitle-sm">Theo dõi từng chu trình Thought ➔ Action ➔ Observation</p>
+                    </div>
+                    <button type="button" id="toggle-trace-btn" class="btn-secondary">Thu Gọn Trace</button>
+                </div>
+
+                <div id="trace-timeline" class="trace-timeline">
+                    <!-- Dynamic iteration cards populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
